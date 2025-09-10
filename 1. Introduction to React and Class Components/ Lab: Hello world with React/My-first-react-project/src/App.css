@@ -1,0 +1,4 @@
+/* src/App.css */
+.btn { padding: 8px 14px; border: none; border-radius: 8px; cursor: pointer; margin-right: 8px; }
+.btn.primary { background: #2563eb; color: white; }
+.btn.secondary { background: #e5e7eb; color: #111827; }
