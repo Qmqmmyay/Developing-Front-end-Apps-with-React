@@ -1,0 +1,3 @@
+[submodule "Practice Project Conference Expense Planner/conference_event_planner"]
+    path = Practice Project Conference Expense Planner/conference_event_planner
+    url = ./Practice Project Conference Expense Planner/conference_event_planner
