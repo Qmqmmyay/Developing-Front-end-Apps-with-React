@@ -1,0 +1,99 @@
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeItem, updateQuantity } from './CartSlice';
+import './CartItem.css';
+
+const CartItem = ({ onContinueShopping, onCheckout }) => {
+  const cart = useSelector(state => state.cart.items);
+  const dispatch = useDispatch();
+
+  // Calculate total amount for all products in the cart
+  const calculateTotalAmount = () => {
+    return cart.reduce((total, item) => {
+      return total + (item.cost.replace('$', '') * item.quantity);
+    }, 0).toFixed(2);
+  };
+
+
+  const handleContinueShopping = (e) => {
+    e.preventDefault();
+    onContinueShopping(); // Chỉ cần gọi callback từ parent component
+  };
+
+  const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+  };
+
+  const handleDecrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+  };
+
+  const handleRemove = (item) => {
+    dispatch(removeItem(item.name));
+  };
+
+  // Calculate total cost based on quantity for an item
+  const calculateTotalCost = (item) => {
+    return (item.cost.replace('$', '') * item.quantity).toFixed(2);
+  };
+
+  // Thêm debug
+  console.log("Cart items:", cart);
+  console.log("onContinueShopping:", onContinueShopping);
+  console.log("onCheckout:", onCheckout);
+  
+  return (
+    <div className="cart-container">
+      <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+      
+      {/* Đặt nút lên đầu trang */}
+      <div className="cart-buttons-top">
+        <button 
+          className="get-started-button" 
+          onClick={handleContinueShopping}
+          style={{ cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '4px', marginRight: '10px' }}
+        >
+          Continue Shopping
+        </button>
+        <button 
+          className="get-started-button1" 
+          onClick={onCheckout}
+          style={{ cursor: 'pointer', backgroundColor: '#3f51b5', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '4px' }}
+          disabled={cart.length === 0}
+        >
+          Checkout
+        </button>
+      </div>
+      
+      {/* Kiểm tra giỏ hàng có trống không */}
+      {cart.length === 0 ? (
+        <div className="empty-cart-message">
+          <p>Your cart is empty. Please add some plants to continue.</p>
+        </div>
+      ) : (
+        <div className="cart-items">
+          {cart.map(item => (
+            <div className="cart-item" key={item.name}>
+              <img className="cart-item-image" src={item.image} alt={item.name} />
+              <div className="cart-item-details">
+                <div className="cart-item-name">{item.name}</div>
+                <div className="cart-item-cost">{item.cost}</div>
+                <div className="cart-item-quantity">
+                  <button className="cart-item-button cart-item-button-dec" onClick={() => handleDecrement(item)}>-</button>
+                  <span className="cart-item-quantity-value">{item.quantity}</span>
+                  <button className="cart-item-button cart-item-button-inc" onClick={() => handleIncrement(item)}>+</button>
+                </div>
+                <div className="cart-item-total">Total: ${calculateTotalCost(item)}</div>
+                <button className="cart-item-delete" onClick={() => handleRemove(item)}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CartItem;
+
+
