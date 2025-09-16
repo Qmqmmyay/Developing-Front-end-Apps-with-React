@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import { TotalCost } from  './totalCost.jsx';
+import { TotalCost } from  './TotalCost.jsx';
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from './CartSlice';
