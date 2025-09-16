@@ -32,10 +32,15 @@ jobs:
         env:
           CI: false
 
+      - name: Create output directory
+        run: |
+          mkdir -p build_output
+          cp -R "Final Project/e-plantShopping/dist/"* build_output/
+          
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: "Final Project/e-plantShopping/dist"
+          folder: build_output
           clean: true
-          target-folder: "Final Project/e-plantShopping"
+          target-folder: "e-plantShopping"
